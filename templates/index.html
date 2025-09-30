@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Liga Legends 2</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+  <main class="container">
+    <h1>⚾ Liga Legends 2</h1>
+    <p id="last-updated" class="muted"></p>
+    <p id="loading">Cargando datos...</p>
+    <p id="error" class="error hidden"></p>
+
+    <!-- ================= STANDINGS ================= -->
+    <section id="standings-section">
+      <h2>📊 Tabla de Posiciones</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Equipo</th>
+            <th>Jugador</th>
+            <th class="num">Prog</th>
+            <th class="num">JJ</th>
+            <th class="num">W</th>
+            <th class="num">L</th>
+            <th class="num">Por jugar</th>
+          </tr>
+        </thead>
+        <tbody id="standings-body"></tbody>
+      </table>
+    </section>
+
+    <!-- ================= GAMES TODAY ================= -->
+    <section id="games-today-section">
+      <h2>📅 Juegos del día</h2>
+      <ul id="games-today-list"></ul>
+    </section>
+  </main>
+
+  <script>
+    const el = {
+      loading: document.getElementById('loading'),
+      error: document.getElementById('error'),
+      updated: document.getElementById('last-updated'),
+      standingsSection: document.getElementById('standings-section'),
+      standingsBody: document.getElementById('standings-body'),
+      gamesSection: document.getElementById('games-today-section'),
+      gamesList: document.getElementById('games-today-list')
+    };
+    const show = x => x.classList.remove('hidden');
+    const hide = x => x.classList.add('hidden');
+
+    async function loadData(){
+      hide(el.error);
+      show(el.loading);
+      try{
+        const r = await fetch('/api/full', {cache:'no-store'});
+        if(!r.ok){
+          let msg = `HTTP ${r.status}`;
+          try{ const j = await r.json(); if (j && j.error) msg = j.error; }catch(_){}
+          throw new Error(msg);
+        }
+        const data = await r.json();
+
+        if (data.last_updated) {
+          el.updated.textContent = `Última actualización: ${data.last_updated}`;
+          show(el.updated);
+        }
+
+        // Standings
+        el.standingsBody.innerHTML = '';
+        (data.standings || []).forEach((row, i) => {
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td>${i+1}</td>
+            <td>${row.team}</td>
+            <td><span class="tag">${row.user}</span></td>
+            <td class="num">${row.scheduled}</td>
+            <td class="num">${row.played}</td>
+            <td class="num">${row.wins}</td>
+            <td class="num">${row.losses}</td>
+            <td class="num">${row.remaining}</td>
+          `;
+          el.standingsBody.appendChild(tr);
+        });
+
+        // Juegos del día
+        el.gamesList.innerHTML = '';
+        const games = data.games_today || [];
+        if (games.length === 0) {
+          el.gamesList.innerHTML = `<li class="muted">No hay juegos programados hoy.</li>`;
+        } else {
+          games.forEach(g => {
+            const li = document.createElement('li');
+            li.textContent = g;
+            el.gamesList.appendChild(li);
+          });
+        }
+        show(el.gamesSection);
+
+      }catch(e){
+        el.error.textContent = 'No se pudieron cargar los datos: ' + e.message;
+        show(el.error);
+      }finally{
+        hide(el.loading);
+      }
+    }
+
+    loadData();
+  </script>
+
+  <!-- ================= CONSULTA DE LOCALÍA ================= -->
+  <section id="consulta-localia" class="card" style="margin-top:20px; padding:16px;">
+    <h2>⚾ Consulta de Localía</h2>
+    <div style="margin:10px 0;">
+      <label for="equipoA">Equipo A:</label>
+      <select id="equipoA" class="input"></select>
+
+      <label for="equipoB" style="margin-left:12px;">Equipo B:</label>
+      <select id="equipoB" class="input"></select>
+
+      <button class="btn" style="margin-left:12px;" onclick="consultarLocalia()">Consultar</button>
+    </div>
+    <p id="resultado-localia" class="muted" style="margin-top:12px;"></p>
+  </section>
+
+  <script>
+    const equipos = [
+      "Mariners","Dodgers","Padres","Yankees","Phillies","Astros",
+      "Mets","Brewers","Braves","Cubs","Reds","Diamondbacks","Red Sox"
+    ];
+
+    // Localías balanceadas (78 juegos, 6/6 por equipo).
+    // Respeta los 6 partidos fijos indicados.
+    const localias = {
+      "Astros-Braves": "Astros",
+      "Astros-Brewers": "Astros",
+      "Astros-Cubs": "Cubs",
+      "Astros-Diamondbacks": "Diamondbacks",
+      "Astros-Dodgers": "Dodgers",
+      "Astros-Mariners": "Astros",
+      "Astros-Mets": "Mets",
+      "Astros-Padres": "Astros",
+      "Astros-Phillies": "Astros",
+      "Astros-Red Sox": "Red Sox",
+      "Astros-Reds": "Astros",
+      "Astros-Yankees": "Yankees",
+      "Braves-Brewers": "Brewers",
+      "Braves-Cubs": "Cubs",
+      "Braves-Diamondbacks": "Braves",         <!-- fijo -->
+      "Braves-Dodgers": "Braves",
+      "Braves-Mariners": "Mariners",
+      "Braves-Mets": "Braves",
+      "Braves-Padres": "Padres",
+      "Braves-Phillies": "Phillies",
+      "Braves-Red Sox": "Red Sox",
+      "Braves-Reds": "Reds",
+      "Braves-Yankees": "Braves",
+      "Brewers-Cubs": "Cubs",
+      "Brewers-Diamondbacks": "Brewers",
+      "Brewers-Dodgers": "Brewers",
+      "Brewers-Mariners": "Brewers",
+      "Brewers-Mets": "Mets",                   <!-- fijo -->
+      "Brewers-Padres": "Brewers",
+      "Brewers-Phillies": "Phillies",
+      "Brewers-Red Sox": "Red Sox",
+      "Brewers-Reds": "Reds",
+      "Brewers-Yankees": "Brewers",
+      "Cubs-Diamondbacks": "Diamondbacks",
+      "Cubs-Dodgers": "Dodgers",                <!-- fijo -->
+      "Cubs-Mariners": "Cubs",
+      "Cubs-Mets": "Cubs",
+      "Cubs-Padres": "Cubs",
+      "Cubs-Phillies": "Phillies",
+      "Cubs-Red Sox": "Red Sox",
+      "Cubs-Reds": "Reds",
+      "Cubs-Yankees": "Cubs",
+      "Diamondbacks-Dodgers": "Diamondbacks",
+      "Diamondbacks-Mariners": "Diamondbacks",
+      "Diamondbacks-Mets": "Diamondbacks",
+      "Diamondbacks-Padres": "Padres",
+      "Diamondbacks-Phillies": "Phillies",
+      "Diamondbacks-Red Sox": "Red Sox",
+      "Diamondbacks-Reds": "Reds",
+      "Diamondbacks-Yankees": "Yankees",        <!-- fijo -->
+      "Dodgers-Mariners": "Mariners",
+      "Dodgers-Mets": "Dodgers",                <!-- fijo -->
+      "Dodgers-Padres": "Padres",
+      "Dodgers-Phillies": "Dodgers",
+      "Dodgers-Red Sox": "Red Sox",
+      "Dodgers-Reds": "Reds",
+      "Dodgers-Yankees": "Dodgers",
+      "Mariners-Mets": "Mariners",
+      "Mariners-Padres": "Mariners",
+      "Mariners-Phillies": "Mariners",
+      "Mariners-Red Sox": "Red Sox",
+      "Mariners-Reds": "Reds",
+      "Mariners-Yankees": "Mariners",
+      "Mets-Padres": "Padres",
+      "Mets-Phillies": "Phillies",
+      "Mets-Red Sox": "Red Sox",
+      "Mets-Reds": "Reds",
+      "Mets-Yankees": "Yankees",
+      "Padres-Phillies": "Padres",
+      "Padres-Red Sox": "Padres",
+      "Padres-Reds": "Reds",
+      "Padres-Yankees": "Padres",
+      "Phillies-Red Sox": "Phillies",
+      "Phillies-Reds": "Reds",
+      "Phillies-Yankees": "Phillies",           <!-- fijo -->
+      "Red Sox-Reds": "Reds",
+      "Red Sox-Yankees": "Yankees",
+      "Reds-Yankees": "Reds"
+    };
+
+    // Llenar selects
+    const selA = document.getElementById("equipoA");
+    const selB = document.getElementById("equipoB");
+    equipos.forEach(eq => {
+      selA.add(new Option(eq, eq));
+      selB.add(new Option(eq, eq));
+    });
+
+    function consultarLocalia(){
+      const a = selA.value, b = selB.value;
+      if(a === b){
+        document.getElementById("resultado-localia").innerText = "⚠️ Elige equipos distintos";
+        return;
+      }
+      const clave1 = a+"-"+b, clave2 = b+"-"+a;
+      const local = localias[clave1] ?? localias[clave2];
+      document.getElementById("resultado-localia").innerText = `🏟️ El local es: ${local}`;
+    }
+  </script>
+</body>
+</html>
