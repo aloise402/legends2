@@ -85,60 +85,6 @@ tr:nth-child(odd) {
   margin-top: 10px;
 }
 
-/* ================= Responsive ================= */
-@media (max-width: 768px) {
-  body {
-    font-size: 14px;
-    padding: 8px;
-  }
-
-  h1 {
-    font-size: 20px;
-    text-align: center;
-  }
-
-  h2 {
-    font-size: 16px;
-    margin-top: 12px;
-  }
-
-  table {
-    font-size: 12px;
-    display: block;
-    overflow-x: auto; /* scroll horizontal si la tabla no cabe */
-    white-space: nowrap;
-  }
-
-  th, td {
-    padding: 4px 6px;
-  }
-
-  .container {
-    padding: 0 5px;
-  }
-
-  #consulta-localia label {
-    display: block;
-    margin: 6px 0;
-  }
-
-  #consulta-localia select, 
-  #consulta-localia button {
-    width: 100%;
-    margin-top: 4px;
-  }
-
-  #consulta-localia div {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-  }
-
-  #resultado-localia {
-    font-size: 14px;
-    text-align: center;
-  }
-}
 /* ================= Responsive Mejorado ================= */
 @media (max-width: 768px) {
   body {
@@ -157,13 +103,14 @@ tr:nth-child(odd) {
     text-align: center;
   }
 
-  /* Tabla responsive */
+  /* Tabla siempre con scroll horizontal */
   table {
     font-size: 13px;
     display: block;
     overflow-x: auto;
     border: 1px solid #333;
     border-radius: 6px;
+    white-space: nowrap;
   }
 
   th, td {
@@ -174,16 +121,16 @@ tr:nth-child(odd) {
     padding: 0 5px;
   }
 
-  /* Consulta Localía en columna */
+  /* Forzar módulo Localía en columna */
   #consulta-localia div {
-    display: flex;
-    flex-direction: column;
+    display: flex !important;
+    flex-direction: column !important;
     gap: 8px;
   }
 
   #consulta-localia select,
   #consulta-localia button {
-    width: 100%;
+    width: 100% !important;
     font-size: 15px;
     padding: 8px;
   }
