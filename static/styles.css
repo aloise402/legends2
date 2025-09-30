@@ -139,3 +139,58 @@ tr:nth-child(odd) {
     text-align: center;
   }
 }
+/* ================= Responsive Mejorado ================= */
+@media (max-width: 768px) {
+  body {
+    font-size: 15px;
+    padding: 6px;
+  }
+
+  h1 {
+    font-size: 20px;
+    text-align: center;
+  }
+
+  h2 {
+    font-size: 16px;
+    margin-top: 10px;
+    text-align: center;
+  }
+
+  /* Tabla responsive */
+  table {
+    font-size: 13px;
+    display: block;
+    overflow-x: auto;
+    border: 1px solid #333;
+    border-radius: 6px;
+  }
+
+  th, td {
+    padding: 6px 8px;
+  }
+
+  .container {
+    padding: 0 5px;
+  }
+
+  /* Consulta Localía en columna */
+  #consulta-localia div {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  #consulta-localia select,
+  #consulta-localia button {
+    width: 100%;
+    font-size: 15px;
+    padding: 8px;
+  }
+
+  #resultado-localia {
+    font-size: 15px;
+    text-align: center;
+    margin-top: 10px;
+  }
+}
