@@ -93,32 +93,25 @@
         if (games.length === 0) {
           el.gamesList.innerHTML = `<li class="muted">No hay juegos programados hoy.</li>`;
         } else {
-games.forEach(g => {
-  const li = document.createElement('li');
-
-  // Dividimos: "Phillies 2 - Yankees 3 | 30-09-2025 - 1:12 am (hora Chile)"
-  let [score, time] = g.split("|").map(s => s.trim());
-
-  // Parsear equipos y marcador
-  let parts = score.match(/(.+?) (\\d+) - (.+?) (\\d+)/);
-  if (parts) {
-    const [, team1, runs1, team2, runs2] = parts;
-
-    li.innerHTML = `
-      <span class="team1">${team1}</span> 
-      <span class="runs">${runs1}</span> - 
-      <span class="team2">${team2}</span> 
-      <span class="runs">${runs2}</span>
-      <br>
-      <span class="time">${time}</span>
-    `;
-  } else {
-    li.textContent = g; // fallback si no cumple formato
-  }
-
-  el.gamesList.appendChild(li);
-});
-
+          games.forEach(g => {
+            const li = document.createElement('li');
+            // Formato esperado: "Astros 3 - Cubs 2 | 30-09-2025 - 12:49 pm (hora Chile)"
+            let [score, time] = g.split("|").map(s => s.trim());
+            let parts = score.match(/(.+?) (\\d+) - (.+?) (\\d+)/);
+            if (parts) {
+              const [, team1, runs1, team2, runs2] = parts;
+              li.innerHTML = `
+                <span class="team1">${team1}</span> 
+                <span class="runs">${runs1}</span> - 
+                <span class="team2">${team2}</span> 
+                <span class="runs">${runs2}</span><br>
+                <span class="time">${time}</span>
+              `;
+            } else {
+              li.textContent = g;
+            }
+            el.gamesList.appendChild(li);
+          });
         }
         show(el.gamesSection);
 
@@ -153,17 +146,6 @@ games.forEach(g => {
       "Mariners","Dodgers","Padres","Yankees","Phillies","Astros",
       "Mets","Brewers","Braves","Cubs","Reds","Diamondbacks","Red Sox"
     ];
-
-    const localias = {
-      "Yankees-Phillies": "Phillies",
-      "Diamondbacks-Yankees": "Yankees",
-      "Diamondbacks-Braves": "Braves",
-      "Mets-Dodgers": "Dodgers",
-      "Brewers-Mets": "Mets",
-      "Cubs-Dodgers": "Dodgers"
-      // ... resto de los juegos balanceados
-    };
-
     const selA = document.getElementById("equipoA");
     const selB = document.getElementById("equipoB");
     equipos.forEach(eq => {
@@ -182,5 +164,8 @@ games.forEach(g => {
       document.getElementById("resultado-localia").innerText = `🏟️ El local es: ${local}`;
     }
   </script>
+
+  <!-- Importamos el archivo externo con todas las localías -->
+  <script src="{{ url_for('static', filename='localias.js') }}"></script>
 </body>
 </html>
