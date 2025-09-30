@@ -85,6 +85,12 @@ tr:nth-child(odd) {
   margin-top: 10px;
 }
 
+/* Juegos del día proporcionales */
+#games-today-list li {
+  font-size: 14px;
+  line-height: 1.4;
+}
+
 /* ================= Responsive Mejorado ================= */
 @media (max-width: 768px) {
   body {
@@ -139,5 +145,11 @@ tr:nth-child(odd) {
     font-size: 15px;
     text-align: center;
     margin-top: 10px;
+  }
+
+  /* Ajustar tamaño de juegos del día en móvil */
+  #games-today-list li {
+    font-size: 13px;
+    line-height: 1.4;
   }
 }
