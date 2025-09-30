@@ -1,3 +1,20 @@
+
+/* Evitar que el navegador “agrande” texto en móvil */
+html { -webkit-text-size-adjust: 100%; }
+
+/* Tamaño más controlado para la lista de juegos en móvil */
+@media (max-width: 768px) {
+  #games-today-list { 
+    font-size: 14px;      /* baja si lo quieres aún más chico (13px) */
+    line-height: 1.35;
+  }
+}
+
+
+
+
+
+
 body {
   font-family: system-ui, sans-serif;
   background: #111;
@@ -92,6 +109,30 @@ tr:nth-child(odd) {
 }
 
 /* ================= Responsive Mejorado ================= */
+
+
+
+/* Evitar que el navegador “agrande” texto en móvil */
+html { -webkit-text-size-adjust: 100%; }
+
+/* Tamaño más controlado para la lista de juegos en móvil */
+@media (max-width: 768px) {
+  #games-today-list { 
+    font-size: 14px;      /* baja si lo quieres aún más chico (13px) */
+    line-height: 1.35;
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
 @media (max-width: 768px) {
   body {
     font-size: 15px;
