@@ -1,20 +1,3 @@
-
-/* Evitar que el navegador “agrande” texto en móvil */
-html { -webkit-text-size-adjust: 100%; }
-
-/* Tamaño más controlado para la lista de juegos en móvil */
-@media (max-width: 768px) {
-  #games-today-list { 
-    font-size: 14px;      /* baja si lo quieres aún más chico (13px) */
-    line-height: 1.35;
-  }
-}
-
-
-
-
-
-
 body {
   font-family: system-ui, sans-serif;
   background: #111;
@@ -102,37 +85,10 @@ tr:nth-child(odd) {
   margin-top: 10px;
 }
 
-/* Juegos del día proporcionales */
-#games-today-list li {
-  font-size: 14px;
-  line-height: 1.4;
-}
-
-/* ================= Responsive Mejorado ================= */
-
-
-
-/* Evitar que el navegador “agrande” texto en móvil */
+/* Evitar autosizing en móvil */
 html { -webkit-text-size-adjust: 100%; }
 
-/* Tamaño más controlado para la lista de juegos en móvil */
-@media (max-width: 768px) {
-  #games-today-list { 
-    font-size: 14px;      /* baja si lo quieres aún más chico (13px) */
-    line-height: 1.35;
-  }
-}
-
-
-
-
-
-
-
-
-
-
-
+/* ================= Responsive Mejorado ================= */
 @media (max-width: 768px) {
   body {
     font-size: 15px;
@@ -157,7 +113,6 @@ html { -webkit-text-size-adjust: 100%; }
     overflow-x: auto;
     border: 1px solid #333;
     border-radius: 6px;
-    white-space: nowrap;
   }
 
   th, td {
@@ -188,9 +143,9 @@ html { -webkit-text-size-adjust: 100%; }
     margin-top: 10px;
   }
 
-  /* Ajustar tamaño de juegos del día en móvil */
-  #games-today-list li {
-    font-size: 13px;
-    line-height: 1.4;
+  /* Ajustar tamaño de juegos del día */
+  #games-today-list {
+    font-size: 14px;
+    line-height: 1.35;
   }
 }

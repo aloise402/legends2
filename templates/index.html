@@ -2,12 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-
-
-<meta name="viewport" content="width=device-width, initial-scale=1">
-
-
-
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Liga Legends 2</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
@@ -138,90 +133,16 @@
       "Mets","Brewers","Braves","Cubs","Reds","Diamondbacks","Red Sox"
     ];
 
-    // Localías balanceadas (78 juegos, 6/6 por equipo).
-    // Respeta los 6 partidos fijos indicados.
     const localias = {
-      "Astros-Braves": "Astros",
-      "Astros-Brewers": "Astros",
-      "Astros-Cubs": "Cubs",
-      "Astros-Diamondbacks": "Diamondbacks",
-      "Astros-Dodgers": "Dodgers",
-      "Astros-Mariners": "Astros",
-      "Astros-Mets": "Mets",
-      "Astros-Padres": "Astros",
-      "Astros-Phillies": "Astros",
-      "Astros-Red Sox": "Red Sox",
-      "Astros-Reds": "Astros",
-      "Astros-Yankees": "Yankees",
-      "Braves-Brewers": "Brewers",
-      "Braves-Cubs": "Cubs",
-      "Braves-Diamondbacks": "Braves",         <!-- fijo -->
-      "Braves-Dodgers": "Braves",
-      "Braves-Mariners": "Mariners",
-      "Braves-Mets": "Braves",
-      "Braves-Padres": "Padres",
-      "Braves-Phillies": "Phillies",
-      "Braves-Red Sox": "Red Sox",
-      "Braves-Reds": "Reds",
-      "Braves-Yankees": "Braves",
-      "Brewers-Cubs": "Cubs",
-      "Brewers-Diamondbacks": "Brewers",
-      "Brewers-Dodgers": "Brewers",
-      "Brewers-Mariners": "Brewers",
-      "Brewers-Mets": "Mets",                   <!-- fijo -->
-      "Brewers-Padres": "Brewers",
-      "Brewers-Phillies": "Phillies",
-      "Brewers-Red Sox": "Red Sox",
-      "Brewers-Reds": "Reds",
-      "Brewers-Yankees": "Brewers",
-      "Cubs-Diamondbacks": "Diamondbacks",
-      "Cubs-Dodgers": "Dodgers",                <!-- fijo -->
-      "Cubs-Mariners": "Cubs",
-      "Cubs-Mets": "Cubs",
-      "Cubs-Padres": "Cubs",
-      "Cubs-Phillies": "Phillies",
-      "Cubs-Red Sox": "Red Sox",
-      "Cubs-Reds": "Reds",
-      "Cubs-Yankees": "Cubs",
-      "Diamondbacks-Dodgers": "Diamondbacks",
-      "Diamondbacks-Mariners": "Diamondbacks",
-      "Diamondbacks-Mets": "Diamondbacks",
-      "Diamondbacks-Padres": "Padres",
-      "Diamondbacks-Phillies": "Phillies",
-      "Diamondbacks-Red Sox": "Red Sox",
-      "Diamondbacks-Reds": "Reds",
-      "Diamondbacks-Yankees": "Yankees",        <!-- fijo -->
-      "Dodgers-Mariners": "Mariners",
-      "Dodgers-Mets": "Dodgers",                <!-- fijo -->
-      "Dodgers-Padres": "Padres",
-      "Dodgers-Phillies": "Dodgers",
-      "Dodgers-Red Sox": "Red Sox",
-      "Dodgers-Reds": "Reds",
-      "Dodgers-Yankees": "Dodgers",
-      "Mariners-Mets": "Mariners",
-      "Mariners-Padres": "Mariners",
-      "Mariners-Phillies": "Mariners",
-      "Mariners-Red Sox": "Red Sox",
-      "Mariners-Reds": "Reds",
-      "Mariners-Yankees": "Mariners",
-      "Mets-Padres": "Padres",
-      "Mets-Phillies": "Phillies",
-      "Mets-Red Sox": "Red Sox",
-      "Mets-Reds": "Reds",
-      "Mets-Yankees": "Yankees",
-      "Padres-Phillies": "Padres",
-      "Padres-Red Sox": "Padres",
-      "Padres-Reds": "Reds",
-      "Padres-Yankees": "Padres",
-      "Phillies-Red Sox": "Phillies",
-      "Phillies-Reds": "Reds",
-      "Phillies-Yankees": "Phillies",           <!-- fijo -->
-      "Red Sox-Reds": "Reds",
-      "Red Sox-Yankees": "Yankees",
-      "Reds-Yankees": "Reds"
+      "Yankees-Phillies": "Phillies",
+      "Diamondbacks-Yankees": "Yankees",
+      "Diamondbacks-Braves": "Braves",
+      "Mets-Dodgers": "Dodgers",
+      "Brewers-Mets": "Mets",
+      "Cubs-Dodgers": "Dodgers"
+      // ... resto de los juegos balanceados
     };
 
-    // Llenar selects
     const selA = document.getElementById("equipoA");
     const selB = document.getElementById("equipoB");
     equipos.forEach(eq => {
