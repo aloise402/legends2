@@ -192,3 +192,33 @@ td.num {
   color: #4ade80;
   font-weight: 600;
 }
+
+
+
+
+
+/* Juegos del día con colores */
+#games-today-list li {
+  margin-bottom: 10px;
+  line-height: 1.4;
+}
+
+#games-today-list .team1 {
+  color: #60a5fa; /* azul claro */
+  font-weight: 600;
+}
+
+#games-today-list .team2 {
+  color: #34d399; /* verde claro */
+  font-weight: 600;
+}
+
+#games-today-list .runs {
+  color: #facc15; /* amarillo */
+  font-weight: 700;
+}
+
+#games-today-list .time {
+  color: #aaa;    /* gris */
+  font-size: 13px;
+}
