@@ -1,16 +1,9 @@
-:root {
-  --bg: #0d1117;
-  --fg: #e6edf3;
-  --accent: #58a6ff;
-  --border: #30363d;
-  --card: #161b22;
-}
-
 body {
+  font-family: system-ui, sans-serif;
+  background: #111;
+  color: #eee;
   margin: 0;
-  font-family: Arial, sans-serif;
-  background: var(--bg);
-  color: var(--fg);
+  padding: 0;
 }
 
 .container {
@@ -19,145 +12,130 @@ body {
   padding: 16px;
 }
 
-h1 {
-  text-align: center;
-  margin-bottom: 0;
-  font-size: 28px;
-}
-
-.subtitle {
-  text-align: center;
-  margin-top: 4px;
-  margin-bottom: 20px;
-  color: #9aa5b1;
-}
-
-/* Tabla */
-.table-wrapper {
-  overflow-x: auto;
-  background: var(--card);
-  padding: 8px;
-  border-radius: 8px;
+h1, h2 {
+  margin: 0 0 12px 0;
+  font-weight: 600;
 }
 
 table {
-  border-collapse: collapse;
   width: 100%;
-  font-size: 14px;
-}
-
-thead {
-  background: #1f2635;
+  border-collapse: collapse;
+  margin-bottom: 16px;
 }
 
 th, td {
-  padding: 8px;
-  text-align: center;
-  border-bottom: 1px solid var(--border);
+  padding: 6px 10px;
+  text-align: left;
 }
 
-tr:hover {
-  background: #1e2738;
+th.num, td.num {
+  text-align: right;
 }
 
-.team {
-  font-weight: bold;
-  font-size: 15px;
-  color: #f4d03f;
-}
-.user {
-  font-size: 13px;
-  color: #a6e3ff;
+tr:nth-child(even) {
+  background: #1c1c1c;
 }
 
-/* ========================= */
-/* Leyenda de zonas          */
-/* ========================= */
-.legend {
-  display: flex;
-  gap: 12px;
-  margin-bottom: 12px;
-  justify-content: center;
-  font-size: 13px;
+tr:nth-child(odd) {
+  background: #222;
 }
-.legend-item {
-  padding: 4px 10px;
+
+.tag {
+  background: #333;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.btn {
+  background: #2563eb;
+  border: none;
+  padding: 6px 12px;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.btn:hover {
+  background: #1d4ed8;
+}
+
+.input {
+  padding: 4px 6px;
+  border: 1px solid #555;
+  border-radius: 4px;
+  background: #1c1c1c;
+  color: #eee;
+}
+
+.error {
+  color: #f87171;
+}
+
+.muted {
+  color: #aaa;
+}
+
+.hidden {
+  display: none;
+}
+
+.card {
+  background: #1c1c1c;
   border-radius: 6px;
-  font-weight: bold;
+  padding: 10px;
+  margin-top: 10px;
 }
 
-/* Postemporada (1-6) */
-
-
-/* Wild Card (7-10) */
-
-
-/* AAA (11-14) */
-
-
-/* Juegos de hoy */
-#games-today {
-  margin-top: 22px;
-  padding: 16px;
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-}
-
-#games-today h2 {
-  margin-top: 0;
-  margin-bottom: 10px;
-  font-size: 18px;
-  color: #cfe2ff;
-}
-
-#games-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-#games-list li {
-  padding: 8px 0;
-  border-bottom: 1px solid #1c2549;
-  font-size: 14px;
-}
-
-#games-list li:last-child {
-  border-bottom: none;
-}
-
-.game-item {
-  color: #e7ecff;
-  font-family: monospace;
-}
-
-/* Utilidad */
-.hidden { display: none; }
-
-/* Responsive */
-@media (max-width: 600px) {
-  th, td {
-    font-size: 12px;
-    padding: 6px;
-  }
-  .team {
+/* ================= Responsive ================= */
+@media (max-width: 768px) {
+  body {
     font-size: 14px;
+    padding: 8px;
   }
-  .user {
-    font-size: 11px;
+
+  h1 {
+    font-size: 20px;
+    text-align: center;
+  }
+
+  h2 {
+    font-size: 16px;
+    margin-top: 12px;
+  }
+
+  table {
+    font-size: 12px;
+    display: block;
+    overflow-x: auto; /* scroll horizontal si la tabla no cabe */
+    white-space: nowrap;
+  }
+
+  th, td {
+    padding: 4px 6px;
+  }
+
+  .container {
+    padding: 0 5px;
+  }
+
+  #consulta-localia label {
+    display: block;
+    margin: 6px 0;
+  }
+
+  #consulta-localia select, 
+  #consulta-localia button {
+    width: 100%;
+    margin-top: 4px;
+  }
+
+  #consulta-localia div {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  #resultado-localia {
+    font-size: 14px;
+    text-align: center;
   }
 }
-
-
-
-
-/* ========================= */
-/* Equipos retirados         */
-/* ========================= */
-table.retired th,
-table.retired td {
-  background-color: #c00; /* rojo fuerte */
-  color: #fff;
-}
-
