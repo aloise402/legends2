@@ -87,7 +87,7 @@ LEAGUE_ORDER = [
     ("LuisMiguelRD451", "Reds"),
     ("JhoancelSC28", "Diamondbacks"),
     ("MVP140605",       "Red Sox"),
-    #("AiramReynoso_",   "Padres"),
+
 ]
 
 FETCH_ALIASES = {
