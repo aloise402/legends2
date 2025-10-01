@@ -61,7 +61,7 @@ API = "https://mlb25.theshow.com/apis/game_history.json"
 PLATFORM = "psn"
 MODE = "LEAGUE"
 SINCE = datetime(2025, 9, 29)  # ← usaremos esta fecha como inicio de Postemporada
-PAGES = (1, 2)
+PAGES = (1, 2, 3, 4, 5)
 TIMEOUT = 20
 RETRIES = 2
 
