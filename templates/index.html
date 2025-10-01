@@ -45,9 +45,7 @@
       loading: document.getElementById('loading'),
       error: document.getElementById('error'),
       updated: document.getElementById('last-updated'),
-      standingsSection: document.getElementById('standings-section'),
       standingsBody: document.getElementById('standings-body'),
-      gamesSection: document.getElementById('games-today-section'),
       gamesList: document.getElementById('games-today-list')
     };
     const show = x => x.classList.remove('hidden');
@@ -87,7 +85,7 @@
           el.standingsBody.appendChild(tr);
         });
 
-        // Juegos del día
+        // Juegos del día (robusto: con o sin "|")
         el.gamesList.innerHTML = '';
         const games = data.games_today || [];
         if (games.length === 0) {
@@ -95,25 +93,33 @@
         } else {
           games.forEach(g => {
             const li = document.createElement('li');
-            // Formato esperado: "Astros 3 - Cubs 2 | 30-09-2025 - 12:49 pm (hora Chile)"
-            let [score, time] = g.split("|").map(s => s.trim());
-            let parts = score.match(/(.+?) (\\d+) - (.+?) (\\d+)/);
-            if (parts) {
-              const [, team1, runs1, team2, runs2] = parts;
+            let score = g, time = "";
+
+            // Si el string viene con "Marcador | Fecha", separamos
+            if (g.includes("|")) {
+              const parts = g.split("|");
+              score = (parts[0] || "").trim();
+              time  = (parts[1] || "").trim();
+            }
+
+            // Parse de "EquipoA n - EquipoB m"
+            const m = score.match(/(.+?)\s+(\d+)\s*-\s*(.+?)\s+(\d+)/);
+            if (m) {
+              const [, team1, runs1, team2, runs2] = m;
               li.innerHTML = `
-                <span class="team1">${team1}</span> 
-                <span class="runs">${runs1}</span> - 
-                <span class="team2">${team2}</span> 
-                <span class="runs">${runs2}</span><br>
-                <span class="time">${time}</span>
+                <span class="team1">${team1}</span>
+                <span class="runs">${runs1}</span> -
+                <span class="team2">${team2}</span>
+                <span class="runs">${runs2}</span>
+                ${time ? `<br><span class="time">${time}</span>` : ``}
               `;
             } else {
+              // Si no matchea, mostramos el texto tal cual (sin "undefined")
               li.textContent = g;
             }
             el.gamesList.appendChild(li);
           });
         }
-        show(el.gamesSection);
 
       }catch(e){
         el.error.textContent = 'No se pudieron cargar los datos: ' + e.message;
@@ -141,59 +147,58 @@
     <p id="resultado-localia" class="muted" style="margin-top:12px;"></p>
   </section>
 
+  <!-- ================= REFUERZOS (IMÁGENES) ================= -->
+  <section id="refuerzos-section" style="margin-top:20px; text-align:center;">
+    <h2>💎 Refuerzos otorgados por juegos jugados</h2>
+
+    <!-- Tabla Excel exportada -->
+    <img src="{{ url_for('static', filename='refuerzos/refuerzos.png') }}"
+         alt="Refuerzos por juegos jugados"
+         style="max-width: 100%; height: auto; border: 2px solid #333; border-radius: 6px; margin-bottom:15px;">
+
+    <!-- Refuerzos Oro -->
+    <h3 style="color:#facc15; margin-top:20px;">Refuerzos Oro</h3>
+    <img src="{{ url_for('static', filename='refuerzos/refuerzos_oro.png') }}"
+         alt="Refuerzos Oro"
+         style="max-width: 100%; height: auto; border: 2px solid #555; border-radius: 6px; margin-bottom:15px;">
+
+    <!-- Refuerzos Plata -->
+    <h3 style="color:#9ca3af; margin-top:20px;">Refuerzos Plata</h3>
+    <img src="{{ url_for('static', filename='refuerzos/refuerzos_plata.png') }}"
+         alt="Refuerzos Plata"
+         style="max-width: 100%; height: auto; border: 2px solid #555; border-radius: 6px;">
+  </section>
+
+  <!-- Carga localías y módulo Localía -->
+  <script src="{{ url_for('static', filename='localias.js') }}"></script>
   <script>
+    // Lista de equipos (para llenar los selects)
     const equipos = [
       "Mariners","Dodgers","Padres","Yankees","Phillies","Astros",
       "Mets","Brewers","Braves","Cubs","Reds","Diamondbacks","Red Sox"
     ];
+
     const selA = document.getElementById("equipoA");
     const selB = document.getElementById("equipoB");
+    // Llenar selects al cargar
     equipos.forEach(eq => {
       selA.add(new Option(eq, eq));
       selB.add(new Option(eq, eq));
     });
 
+    // Función pública para el botón
     function consultarLocalia(){
       const a = selA.value, b = selB.value;
       if(a === b){
         document.getElementById("resultado-localia").innerText = "⚠️ Elige equipos distintos";
         return;
       }
-      const clave1 = a+"-"+b, clave2 = b+"-"+a;
-      const local = localias[clave1] ?? localias[clave2];
-      document.getElementById("resultado-localia").innerText = `🏟️ El local es: ${local}`;
+      const clave1 = a + "-" + b, clave2 = b + "-" + a;
+      // 'localias' llega desde static/localias.js
+      const local = (typeof localias !== "undefined") ? (localias[clave1] ?? localias[clave2]) : null;
+      document.getElementById("resultado-localia").innerText =
+        local ? `🏟️ El local es: ${local}` : "🏟️ Localía no definida";
     }
   </script>
-
-  <!-- Importamos el archivo externo con todas las localías -->
-  <script src="{{ url_for('static', filename='localias.js') }}"></script>
-
-
-
-<!-- ================= REFUERZOS ================= -->
-<section id="refuerzos-section" style="margin-top:20px; text-align:center;">
-  <h2>💎 Refuerzos otorgados por juegos jugados</h2>
-  <img src="{{ url_for('static', filename='refuerzos/refuerzos.png') }}" 
-       alt="Refuerzos por juegos jugados" 
-       style="max-width: 100%; height: auto; border: 2px solid #333; border-radius: 6px;">
-  <p class="muted" style="margin-top:8px; font-size:13px;">
-    📌 Esta tabla se actualiza manualmente desde Excel. Última actualización: reemplaza la imagen en <code>static/refuerzos/refuerzos.png</code>.
-  </p>
-</section>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 </body>
 </html>
