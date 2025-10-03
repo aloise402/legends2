@@ -106,9 +106,10 @@ TEAM_POINT_ADJUSTMENTS = {}
 TEAM_RECORD_ADJUSTMENTS = {
     # Ejemplos de uso:
      "Diamondbacks": (0, -1),   # sumar 1 victoria
-     "Yankees": (-1, 0),   # sumar 1 derrota
+     "Yankees": (-2, 0),   # sumar 1 derrota
      "Padres": (-1, -1),   # sumar 1 derrota
-     "Brewers": (-1, -1),   # sumar 1 derrota
+     "Brewers": (-1, -1), 
+    "Reds": (0, -1),   # sumar 1 derrota
 }
 
 
